@@ -6,11 +6,11 @@ export default function App() {
   return (
     <View style={styles.appContainer}>
       <View style={styles.inputContainer}>
-        <TextInput style={styles.textContainer} placeholder='Mi novia bella'/>
-        <Button title='ADD GF!'></Button>
+        <TextInput style={styles.textContainer} placeholder='Goal to achieve'/>
+        <Button title='Add Goal'></Button>
       </View>
-      <View>
-        <Text>Novia bella</Text>
+      <View style={styles.goalsContainer}>
+        <Text>List of goals:</Text>
       </View>
       </View>
   );
@@ -21,19 +21,28 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     backgroundColor: '#fff',
-    alignItems: 'center',
-    alignContent: 'center'
+    alignContent: 'center',
+    paddingTop: 50,
+    marginBottom: 26,
+    paddingHorizontal: 16,
+
   },
   inputContainer: {
     flexDirection: 'row',
+    flex: 1,
     margin: 3,
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderColor: '#cccccc'
   },
   textContainer: {
     borderWidth: 1,
     borderColor: '#cccccc',
-    width: '30%',
+    width: '70%',
     padding: 5,
+  },
+  goalsContainer: {
+    flex: 5
   }
-
 });
