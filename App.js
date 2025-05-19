@@ -1,44 +1,50 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
-import { StyleSheet,
-  View,
-  Button,
-  TextInput,
-  FlatList
-} from 'react-native';
+import { StyleSheet, View, FlatList, Button } from 'react-native';
 import GoalItem from './components/GoalItem';
+import GoalInput from './components/GoalInput';
 
 export default function App() {
-  const [enteredGoalText, setEnteredGoalText] = useState("");
   const [listOfGoals, setListOfGoals] = useState([])
+  const [modalIsVisible, setModalIsVisible] = useState(false)
 
-  function goalInputHandler(enteredGoalText) {
-      setEnteredGoalText(enteredGoalText)
+  function startAddGoalHandler(){
+    setModalIsVisible(true)
   }
-
-  function addGoalHandler() {
+  function addGoalHandler(enteredGoalText) {
     setListOfGoals((currentCourseGoals) => [
       ...currentCourseGoals,
-      {text: enteredGoalText, key: Math.random().toString()}
-    ])    
+      { text: enteredGoalText, id: Math.random().toString() }
+    ])
+  }
+
+  function deleteGoal(id) {
+    setListOfGoals((currentCourseGoals) => {
+      return currentCourseGoals.filter((goal) => goal.id !== id)
+    }
+  );    
   }
 
   return (
     <View style={styles.appContainer}>
-      <View style={styles.inputContainer}>
-        <TextInput
-        style={styles.textContainer}
-        placeholder='Goal to achieve'
-        onChangeText={goalInputHandler}
-        />
-        <Button title='Add Goal' onPress={addGoalHandler}/>
-      </View>
+      <Button 
+        title='Add new goal'
+        color="#5e0acc"
+        onPress={startAddGoalHandler}
+      />
+      <GoalInput visible={modalIsVisible} onAddGoal={addGoalHandler} />
       <View style={styles.goalsContainer}>
-        <FlatList data={listOfGoals} renderItem={(itemData)=> { 
-          return <GoalItem text={itemData.item.text}/>
-          }}/>
+        <FlatList data={listOfGoals} renderItem={(itemData) => {
+          return (
+          <GoalItem 
+          text={itemData.item.text}
+          onDeleteItem={deleteGoal}
+          id={itemData.item.id}
+          />
+        );
+        }} />
       </View>
-      </View>
+    </View>
   );
 }
 
@@ -52,21 +58,6 @@ const styles = StyleSheet.create({
     marginBottom: 26,
     paddingHorizontal: 16,
 
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    flex: 1,
-    margin: 3,
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    borderBottomWidth: 1,
-    borderColor: '#cccccc'
-  },
-  textContainer: {
-    borderWidth: 1,
-    borderColor: '#cccccc',
-    width: '70%',
-    padding: 5,
   },
   goalsContainer: {
     flex: 5
